@@ -1,6 +1,6 @@
 import math as m
 from flask import Flask, request, jsonify
-from calculation import Calculation
+from app.calculation import Calculation
 
 app = Flask(__name__)
 
