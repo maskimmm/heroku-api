@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        td {
+            padding-inline-start: 10px;
+        }
+        .c1 {width: 20%;}
+        .tr {height: 50px;}
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irradiance Simulation</title>
+</head>
+
+<body>
+    <h1>A prototype API for Calculating Expected Energy html.</h1>
+    <table style="width: 80%; height: 80px;">
+        <tr class="tr">
+            <th class="c1">API Name</th>
+            <th class="c1">Description</th>
+            <th class="c1">API Route</th>
+            <th class="c1">Inputs</th>
+            <th class="c1">Output</th>
+        </tr>
+        <tr class="tr">
+            <td>PV Output Daily and Yearly, Expected Energy Daily and Yearly</td>
+            <td>-</td>
+            <td>/api/v1/all-output</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float}</td>
+            <td>Json of [pvYearly, pvDaily, eeDaily, eeYearly] (each in float)</td>
+        </tr>
+        <tr class="tr">
+            <td>Expected Energy SVI Yearly</td>
+            <td>Used to Calculate Yearly Expected Energy after SVI</td>
+            <td>/api/v1/energy-svi-yearly</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float}</td>
+            <td>Expected Energy SVI Yearly (float)</td>
+        </tr>
+        <tr class="tr">
+            <td>Expected Energy SVI Daily</td>
+            <td>Used to Calculate Daily Expected Energy after SVI</td>
+            <td>/api/v1/energy-svi-daily</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float}</td>
+            <td>Expected Energy SVI Daily (float)</td>
+        </tr>
+        <tr class="tr">
+            <td>PV Output Daily</td>
+            <td>Used to Calculate Daily PV Output</td>
+            <td>/api/v1/pv-output-daily</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float}</td>
+            <td>PV Output Daily (float)</td>
+        </tr>
+        <tr class="tr">
+            <td>PV Output Yearly</td>
+            <td>Used to Calculate Yearly PV Output</td>
+            <td>/api/v1/pv-output-yearly</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float}</td>
+            <td>PV Output Yearly (float)</td>
+        </tr>
+    </table>
+</body>
+
+</html>
