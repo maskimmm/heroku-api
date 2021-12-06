@@ -17,9 +17,9 @@ avgInverter:float = {
     "Weight" : 0.004747294,
     }
 
-print(type(avgInverter))
-print(avgInverter.keys()) # list key
-print(avgInverter["Price"]) # access key's value
+# print(type(avgInverter))
+# print(avgInverter.keys()) # list key
+# print(avgInverter["Price"]) # access key's value
 
 class Calculation:
 
