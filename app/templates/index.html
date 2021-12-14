@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <h1>A prototype API for Calculating Expected Energy html.</h1>
+    <h1>A prototype API for Calculating Expected Energy.</h1>
     <table style="width: 80%; height: 80px;">
         <tr class="tr">
             <th class="c1">API Name</th>
@@ -30,41 +30,63 @@
             <th class="c1">Output</th>
         </tr>
         <tr class="tr">
+            <td>Return Of Investment</td>
+            <td>-</td>
+            <td>/api/v1/return-of-investment</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float, RLength:float, RWidth:float, PLN:float}</td>
+            <td>Json of {Year:{Tahun, YearlyIncome, OMCost, IncomeYearN, ROI}} (each in float)</td>
+        </tr>
+        <tr class="tr">
+            <td>Net Present Value</td>
+            <td>-</td>
+            <td>/api/v1/net-present-value</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float, RLength:float, RWidth:float, PLN:float}</td>
+            <td>Json of {Year:{Tahun, CapitalCost, YearlyIncome, OMCost, Rt, NPV}} (each in float)</td>
+        </tr>
+        <tr class="tr">
             <td>PV Output Daily and Yearly, Expected Energy Daily and Yearly</td>
             <td>-</td>
             <td>/api/v1/all-output</td>
-            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float}</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float, RLength:float, RWidth:float, PLN:float}</td>
             <td>Json of [pvYearly, pvDaily, eeDaily, eeYearly] (each in float)</td>
         </tr>
         <tr class="tr">
             <td>Expected Energy SVI Yearly</td>
             <td>Used to Calculate Yearly Expected Energy after SVI</td>
             <td>/api/v1/energy-svi-yearly</td>
-            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float}</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float, RLength:float, RWidth:float, PLN:float}</td>
             <td>Expected Energy SVI Yearly (float)</td>
         </tr>
         <tr class="tr">
             <td>Expected Energy SVI Daily</td>
             <td>Used to Calculate Daily Expected Energy after SVI</td>
             <td>/api/v1/energy-svi-daily</td>
-            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float}</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float, RLength:float, RWidth:float, PLN:float}</td>
             <td>Expected Energy SVI Daily (float)</td>
         </tr>
         <tr class="tr">
             <td>PV Output Daily</td>
             <td>Used to Calculate Daily PV Output</td>
             <td>/api/v1/pv-output-daily</td>
-            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float}</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float, RLength:float, RWidth:float, PLN:float}</td>
             <td>PV Output Daily (float)</td>
         </tr>
         <tr class="tr">
             <td>PV Output Yearly</td>
             <td>Used to Calculate Yearly PV Output</td>
             <td>/api/v1/pv-output-yearly</td>
-            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float}</td>
+            <td>{GMT: float, Lat:float, Long:float, ColTilt:float, AzimuthCol:float, RLength:float, RWidth:float, PLN:float}</td>
             <td>PV Output Yearly (float)</td>
         </tr>
     </table>
+    <h3>How to use this API Using Postman:</h3>
+    <ol>
+        <li>Set Method as 'POST' Methods</li>
+        <li>Insert Link, start with api-calculation.herokuapp.com + API Route above. (Example: To use Return Of Investment Feature, type this link api-calculation.herokuapp.com/api/v1/return-of-investment)</li>
+        <li>Select Body > raw</li>
+        <li>In raw, put all 'Inputs' above with formats: {"Key": Value} . (Example: {"GMT":7, "Lat":-7.2855, "Long":112.796, "ColTilt":15, "AzimuthCol":-90, "RLength":4, "RWidth":2, "PLN":1300})</li>
+
+    </ol>
 </body>
 
 </html>

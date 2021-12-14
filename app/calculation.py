@@ -1,25 +1,5 @@
 import math as m
 import numpy as np
-import json
-
-# avgPVM:float = {
-#     "Kurs" : 14284.75,
-#     "PmaxCoeff" : -0.35,
-#     "NOCT" : 44,
-#     "Price" : 3696933.54,
-#     "Wp" : 0.004990696,
-#     "Weight" : 0.055452816
-# }
-
-# avgInverter:float = {
-#     "Kurs" : 16293.95,
-#     "Price" : 4423.78,
-#     "Weight" : 0.004747294,
-#     }
-
-# print(type(avgInverter))
-# print(avgInverter.keys()) # list key
-# print(avgInverter["Price"]) # access key's value
 
 class Calculation:
 
@@ -40,9 +20,12 @@ class Calculation:
     __avgPWp:float = 0.004990696
     __avgPWeight:float = 0.055452816
 
-    # sVI:float = [0, 0.431875863,0.653497657,0.627008728,0.432552214,0.531985251,0.628520241,0.656818742,0.516130328,0.524564597,0.390344796,0.574475265,0.557549993,0.658034062,0.641765028,0.595967765,0.498697268,0.757540308,0.555220492,0.664280617,0.478631463,0.56740776,0.578509138,0.50806733,0.660742918,0.647824455,0.786685244,0.518268693,0.453995539,0.526478472,0.414282308,0.593055926,0.465041059,0.549965033,0.593512149,0.816851847,0.752596744,0.607680625,0.725527453,0.593901315,0.487463242,0.462640395,0.422455195,0.465124578,0.581120655,0.401020354,0.462827225,0.591922519,0.392684195,0.462506631,0.585234445,0.479434677,0.555143283,0.545782261,0.507004067,0.487375333,0.581369534,0.580660398,0.579211692,0.562851816,0.687953577,0.452785635,0.599391732,0.47945302,0.455529926,0.505482386,0.622435867,0.492223467,0.581992772,0.581693539,0.626671242,0.631271127,0.577910156,0.410450655,0.620622174,0.714662932,0.81697317,0.759645575,0.617646099,0.747869533,0.737602833,0.793572741,0.707124128,0.600438399,0.627604631,0.817917509,0.888684006,0.517031754,0.571060237,0.550750679,0.803881886,0.715896904,0.62611939,0.580405286,0.525927758,0.631284828,0.701350162,0.424752512,0.816233604,0.543479999,0.905736371,0.883843012,0.732126537,0.895421822,0.717308454,0.859436632,0.673254328,0.78241463,0.524773483,0.582613677,0.501452848,0.914778303,0.918895152,0.883194456,0.922775217,0.881572422,0.772916795,0.766520483,0.962539042,0.536928524,0.691818702,0.802585174,0.80899343,0.923121376,0.676417228,0.949667851,0.729010246,0.946461678,0.986633932,0.965087052,0.669094355,0.784228882,0.590629831,0.937877501,1.002064852,0.874714105,0.907708113,0.990973716,0.951490681,0.48474163,0.781178952,0.823544695,0.402906968,0.66869264,0.594928851,0.969675845,0.874760427,0.76142182,0.816067847,0.261407091,0.811445716,0.829935213,0.49053084,0.426344663,0.509232714,0.926651186,1.060165782,1.047087246,0.89552973,0.75616614,0.997437621,0.922918875,1.051723361,0.990235769,1.036249126,1.017127614,0.665725123,0.773004488,0.993832341,1.017817444,1.043262944,1.019774788,0.721281302,0.863521517,1.043535668,1.026110868,1.008477219,0.912565789,1.037906851,1.010856358,0.966825017,1.031252373,1.04468906,1.042594787,1.049237445,1.066922543,1.047969349,0.786320119,0.403704989,1.034813464,0.978931985,0.90542633,1.034652123,0.984933949,0.950005659,0.971351974,0.823304285,0.515015354,0.946279752,1.086671476,1.022763866,0.906115107,1.043348736,0.946907324,1.057246077,1.026776618,1.016332402,0.990853869,0.992124243,1.032180256,1.056673888,0.853733376,1.064071438,0.991501756,0.998071137,0.986549934,0.886853053,0.694010329,0.88383303,0.880360296,0.753813788,0.934569351,0.95229449,0.836974125,0.67991929,1.032189677,0.874802261,0.78494654,0.941557621,0.986710321,0.996197397,0.990554287,1.004632962,0.890074997,1.009032804,1.003560508,0.964198669,0.994582653,1.015665263,0.996034434,0.993062759,0.760867192,0.93510699,0.95122927,0.952038157,0.919637941,0.732473351,0.905617329,0.944010216,0.920166741,0.932459014,0.919000074,0.922203619,0.850062319,0.908556163,0.901358336,0.91051608,0.862438064,0.902962443,0.83847136,0.911851526,0.933095623,0.873486804,0.898435553,0.847381086,0.9168877,0.826497858,0.925161038,0.898839398,0.900676198,0.780732871,0.874434073,0.923723303,0.89982469,0.806557354,0.8989459,0.85082961,0.886029814,0.845522322,0.811169823,0.839729539,0.779510482,0.779349852,0.577201402,0.49704378,0.887351151,0.848922854,0.887790509,0.876719349,0.863329619,0.856385115,0.682128237,0.472970431,0.242635139,0.595453964,0.614944313,0.836774535,0.751059637,0.822200027,0.881289518,0.707507793,0.661697788,0.824486101,0.705455283,0.490118735,0.460048579,0.640680246,0.592056747,0.663830018,0.565724317,0.719765887,0.811514805,0.787092831,0.795783004,0.809569591,0.827215759,0.637479225,0.557581605,0.701822842,0.806721911,0.730094132,0.816708563,0.81669322,0.82924053,0.799065591,0.628058173,0.795651383,0.646559367,0.660737102,0.582711801,0.681321604,0.316237282,0.378985331,0.421446856,0.527197003,0.277997795,0.686477099,0.519809179,0.420129318,0.628566705,0.42548391,0.48489074,0.448996034,0.546049568,0.153753914,0.484792513,0.470549551,0.315779972,0.570700619,0.526932048,0.4867896,0.383013587,0.431081744,0.452675868,0.446828398,0.686547475,0.534557827,0.64091421,0.776170726,0.630905442,0.47341185,0.485707663,0.450654054,0.569332753,0.510203289,0.297359382,0.563971783]
+    # Analisa Ekonomi
+    __iAnalisaEkonomi = 0.025
+    __dAnalisaEkonomi = 0.0257
+
     sVI:float = [0,0.451931998,0.683839601,0.656114289,0.452626311,0.556667475,0.657673254,0.68727535,0.540055753,0.548872982,0.408427153,0.601077634,0.58335881,0.68848222,0.671448197,0.623520957,0.521743216,0.792532039,0.580854769,0.694935314,0.500707986,0.593565664,0.605164869,0.531464803,0.691154728,0.677624992,0.822852858,0.542082081,0.474843355,0.550640199,0.433283369,0.620239537,0.486343475,0.575141511,0.620664547,0.854197247,0.786981669,0.635425956,0.758630968,0.620980614,0.50967409,0.483705536,0.441677107,0.486273,0.607524403,0.419228018,0.483825967,0.618758904,0.410474593,0.483444944,0.611709302,0.501107319,0.58021967,0.570417432,0.529871789,0.50934125,0.607552062,0.606791295,0.605257726,0.588143048,0.718842748,0.473100344,0.626263691,0.500931576,0.475921291,0.528092657,0.650256362,0.51420729,0.607966208,0.60763398,0.654596333,0.659379972,0.6036236,0.428699459,0.648194603,0.746389575,0.853214716,0.793318976,0.645004695,0.780971914,0.770226778,0.814612071,0.738354315,0.626937557,0.65528271,0.853962682,0.92781983,0.539784592,0.596172934,0.574953246,0.839183581,0.747313038,0.653576857,0.605840647,0.5489601,0.658912553,0.732023764,0.443316803,0.851884618,0.567202394,0.94524545,0.922372481,0.764022045,0.934406979,0.748519522,0.896808985,0.70251286,0.816396721,0.547552121,0.607888163,0.523193904,0.954416908,0.958689702,0.92142164,0.962693648,0.919687812,0.806316549,0.799626411,1.004089444,0.560094555,0.721652544,0.837178572,0.843846081,0.962871812,0.705530675,0.990523318,0.760358634,0.987142661,1.029023111,1.006532779,0.697816624,0.817879742,0.615963292,0.978089437,1.045012398,0.912189506,0.946582901,1.033399476,0.992211997,0.505480328,0.814589202,0.858755713,0.420128137,0.697265587,0.620342583,1.011086226,0.912107394,0.793921527,0.850891368,0.272559289,0.846055881,0.865326303,0.511444308,0.444518017,0.530935202,0.966136264,1.105332497,1.091689844,0.933670933,0.78836743,1.039908185,0.962212004,1.096495722,1.032386691,1.08035508,1.060416626,0.694056714,0.805899984,1.036123594,1.061128118,1.087655593,1.063167661,0.751972955,0.900266228,1.087941464,1.069776721,1.051394643,0.951403734,1.082082155,1.053883678,1.007981759,1.075156052,1.089169637,1.086991506,1.093922841,1.112367506,1.092613748,0.819823438,0.420908896,1.07892011,1.020664823,0.944033358,1.078778661,1.026949419,0.990540574,1.012807744,0.858450479,0.537006705,0.986697241,1.133098439,1.066473157,0.944850881,1.087964972,0.987412405,1.10248588,1.070727453,1.059851248,1.033296814,1.034637079,1.076425995,1.101986853,0.890357989,1.109737597,1.034070778,1.040939975,1.028941825,0.924977392,0.723857757,0.921861153,0.918256185,0.786277336,0.97483613,0.993344499,0.873070516,0.709256715,1.076749153,0.91258639,0.818866984,0.982266886,1.029394197,1.03931457,1.033450281,1.048162321,0.928661964,1.052801266,1.047116134,1.006069792,1.037798102,1.059822456,1.039363618,1.036288329,0.794005727,0.975858963,0.99270919,0.993578955,0.959789972,0.764473718,0.945207066,0.985304658,0.960444069,0.973300847,0.959278683,0.962649213,0.887368659,0.948456178,0.94096881,0.950556007,0.900389519,0.94272431,0.875418727,0.952060146,0.974269568,0.912057317,0.938135518,0.884851406,0.957460173,0.863096499,0.966157802,0.938698216,0.940645085,0.815403987,0.913294293,0.964803612,0.939871141,0.842479009,0.939011365,0.888778166,0.925577171,0.883289195,0.847428741,0.877292498,0.814405207,0.814262902,0.603077584,0.519342753,0.92718965,0.887063904,0.927706927,0.916166704,0.902202763,0.894973562,0.712886988,0.494313182,0.253591921,0.622362461,0.642753479,0.874642366,0.78507264,0.859461095,0.921256583,0.739616232,0.691748192,0.861955343,0.737537187,0.512423058,0.480998697,0.669875813,0.61905461,0.694120834,0.591555504,0.752652072,0.848616909,0.823101322,0.832212013,0.846652802,0.865130577,0.666715341,0.58316875,0.734048125,0.843785283,0.763656112,0.854273194,0.854277805,0.867423127,0.835878207,0.657007498,0.832344157,0.676391203,0.69123772,0.609623214,0.712801391,0.330855139,0.396511133,0.440944268,0.551596411,0.290868826,0.718271967,0.54389309,0.439601347,0.657708588,0.445216321,0.507384618,0.469830333,0.571393664,0.160891832,0.507303481,0.492403433,0.330448443,0.597214759,0.551416177,0.509411234,0.400814458,0.451118287,0.473717445,0.467599096,0.718462257,0.55940738,0.670707464,0.812250267,0.660230935,0.495415212,0.50828046,0.471595459,0.595785606,0.533905297,0.311171199,0.590162398]
-    def __init__(self, inputGMT: float, inputLat: float, inputLong: float, inputColTilt: float, inputAzimuthCol: float):
+    def __init__(self, inputGMT: float, inputLat: float, inputLong: float, inputColTilt: float, inputAzimuthCol: float, inputRoofLength: float, inputRoofWidth: float, inputPLN: float):
         
         #input data
         self.inputGMT = inputGMT
@@ -51,6 +34,10 @@ class Calculation:
         self.inputLong = inputLong
         self.inputColTilt = inputColTilt
         self.inputAzimuthCol = inputAzimuthCol
+        self.inputRoofLength = inputRoofLength
+        self.inputRoofWidth = inputRoofWidth
+        self.inputPLN = inputPLN
+        self.RoofArea = inputRoofWidth * inputRoofLength
 
     # B (Koefisien) // Col E
     def koefisien(self, day:float):
@@ -440,11 +427,6 @@ class Calculation:
         pvOutput = __pAc * __expectedEnergyPerDaySVI * 1
         return pvOutput
 
-    # def pvOutputPerDay(self,day:float = 1, clockTime:float = 24):
-    #     pvOutputPerDay = 0.0
-    #     for iterate in range(clockTime):
-    #         pvOutputPerDay = pvOutputPerDay + self.pvOutput(day=day, clockTime=iterate)
-    #     return pvOutputPerDay
 
     def pvOutputYearly(self,day:float = 367):
         pvOutputYearly = 0.0
@@ -458,14 +440,253 @@ class Calculation:
         return pvOutputDaily
 
 
-# nc = Calculation(inputGMT = 7, inputLat = -7.285499, inputLong = 112.79608, inputColTilt = 15, inputAzimuthCol = 180)
+    # SIZING TAB
 
-# print("Expected Energy Per Day: " + str(nc.expectedEnergyPerDay(day= 1)))
-# print("Expected Energy Per Day After SVI: " + str(nc.expectedEnergyPerDaySVI(day= 1)))
-# print("Expected Energy Daily: " + str(nc.getExpectedEnergyDaily()))
-# print("Expected Energy Yearly After SVI: " + str(nc.getExpectedEnergySVIYearly(day= 367)))
+    # SIZING
+    # Golongan PLN
+    def golPLN (self):
+        __pln = self.inputPLN
+        # print(str(__pln))
+        if(__pln > 0 and __pln <= 900):
+            print("Golongan R-1 (900 VA)")
+            golPLN = 1352.0
+        elif(__pln > 900 and __pln <= 1300):
+            print("Golongan R-1 (1300 VA)")
+            golPLN = 1444.7
+        elif(__pln > 1300 and __pln <= 2200):
+            print("Golongan R-1 (2200 VA)")
+            golPLN = 1444.7
+        elif(__pln > 2200 and __pln <= 5500):
+            print("Golongan R-2 (2200-5500 VA)")
+            golPLN = 1444.7
+        elif(__pln > 5500):
+            print("Golongan R-3 (>5500 VA)")
+            golPLN = 1444.7
+        else:
+            print("Golongan Tidak sesuai")
+            golPLN = 0
+        return golPLN
 
-# print("Expected PV Output: " + str(nc.pvOutput()))
-# print("Expected PV Output Daily: " + str(nc.pvOutputDaily()))
-# print("Expected PV Output Yearly After SVI: " + str(nc.pvOutputYearly()))
+    # Kapasitas Terpasang (Temp) // B16
+    def kTB16(self):
+        __roofArea =self.RoofArea
+        __avgPWp = self.__avgPWp
+        kapasitas = __roofArea / __avgPWp
+        return kapasitas
+
+    # Kapasitas terpasang (Temp) // D16
+    def kTD16(self):
+        __kTB16 = self.kTB16()
+        kTD16 = __kTB16 * (0.965 * 0.99 * 0.997 * 0.991 * 0.995 * 0.97 * 0.959)
+        return kTD16
+
+    # Kapasitas Terpasang (Temp) // F16
+    def kTF16(self):
+        __kTD16 = self.kTD16()
+        kTF16 = __kTD16 / 0.85
+        return kTF16
+
+    # Inverter // B17
+    def inverterB17(self):
+        __PLN = self.inputPLN
+        __kTF16 = self.kTF16()
+        if (__kTF16 > __PLN):
+            inverter = __PLN
+        else:
+            inverter = __kTF16
+        return inverter
+
+    # Inverter // D17
+    def inverterD17(self):
+        __inverterB17 = self.inverterB17()
+        inverter = __inverterB17 * 0.85
+        return inverter
+
+    # Inverter // F17
+    def inverterF17(self):
+        __inverterD17 = self.inverterD17()
+        inverter = __inverterD17 / (0.965 * 0.99 * 0.997 * 0.991 * 0.995 * 0.97 * 0.959)
+        return inverter
+
+    # Kapasitas Terpasang // B18
+    def kapasitasTerpasangB18(self):
+        return self.inverterF17()
+
+    # Kapasitas Terpasang // D18
+    def kapasitasTerpasangD18(self):
+        kapasitas = self.kapasitasTerpasangB18() * (0.965 * 0.99 * 0.997 * 0.991 * 0.995 * 0.97 * 0.959)
+        return kapasitas
+
+    # Berat PV // B19
+    def beratPV(self):
+        __kTB18 = self.kapasitasTerpasangB18()
+        __avgPWeight = self.__avgPWeight
+        beratPV = __kTB18 * __avgPWeight
+        return beratPV
+    
+    # Berat Inverter // B20
+    def beratInverter(self):
+        __inverterb17 = self.inverterB17()
+        __avgIWeight = self.__avgIWeight
+        beratInverter = __inverterb17 * __avgIWeight
+        return beratInverter
+
+    # HARGA INVESTASI
+    # PV // B23
+    def pvB23(self):
+        __kTB18 = self.kapasitasTerpasangB18()
+        __avgPPrice = self.__avgPPrice
+        pvB23 = __kTB18 * __avgPPrice / 1000
+        return pvB23
+    
+    # Inverter // B24
+    def inverterB24(self):
+        __inverterB17 = self.inverterB17()
+        __avgIPrice = self.__avgIPrice
+        inverterB24 = __inverterB17 * __avgIPrice
+        return inverterB24
+
+    # Shipping PV & inverter // B25
+    def shippingPVInverterB25(self):
+        __beratPV = self.beratPV()
+        __beratInverter = self.beratInverter()
+        __kurs = self.__avgPKurs
+        shipping = (__beratPV + __beratInverter) * 1.05 * __kurs
+        return shipping
+
+    # Pajak // B26
+    def pajakB26(self):
+        __b23 = self.pvB23()
+        __b24 = self.inverterB24()
+        __b25 = self.shippingPVInverterB25()
+        B26 = (__b23 + __b24 + __b25) * 0.175
+        return B26
+    
+    # Mounting // B27
+    def MountingB27(self):
+        __roofLength = self.inputRoofLength
+        __roofWidth = self.inputRoofWidth
+        b27 = (__roofLength + __roofWidth) * 2 * 88000
+        return b27
+
+    # Total // B28
+    def totalB28(self):
+        __b23 = self.pvB23()
+        __b24 = self.inverterB24()
+        __b25 = self.shippingPVInverterB25()
+        __b26 = self.pajakB26()
+        __b27 = self.MountingB27()
+        b28 = __b23 + __b24 + __b25 + __b26 + __b27
+        return b28
+    
+    # Energi Terbangkitkan // B30
+    def energiTerbangkitkanB30(self):
+        __b18 = self.kapasitasTerpasangB18()
+        __pvOutputYearly = self.pvOutputYearly()
+        b30 = __b18 / 1000 * __pvOutputYearly
+        return b30
+    
+    # Pendapatan Energi // B31
+    def pendapatanEnergiB31(self):
+        __biayaPLN = self.golPLN()
+        __b30 = self.energiTerbangkitkanB30()
+        b31 = __b30 * __biayaPLN * 0.65
+        return b31
+
+    # ANALISA EKONOMI TAB
+
+    # OM Cost/Tahun // B5
+    def oMCostB5(self):
+        __d18 = self.kapasitasTerpasangD18()
+        __avgPKurs = self.__avgPKurs
+        b5 = (__d18 * 25 * __avgPKurs / 1000) * -1
+        return b5
+    
+    # Simple Payback Period
+    def simplePayback(self):
+        __b3 = self.totalB28()
+        __b4 = self.pendapatanEnergiB31()
+        __b5 = self.oMCostB5()
+        b6 = __b3 / (__b4 + __b5)
+        return b6
+    
+    # Return of Investment (ROI)
+    def rOI(self, year:float = 26):
+        __d18 = self.kapasitasTerpasangD18()
+        __avgPkurs = self.__avgPKurs
+        __iAE = self.__iAnalisaEkonomi
+        __dAE = self.__dAnalisaEkonomi
+        __b28 = self.totalB28()
+        __colF1 = self.pendapatanEnergiB31()
+        newdict = {}
+        for iterate in range(1, year):
+            if(iterate == 1 ):
+                __year = iterate
+                __colF = __colF1
+                __colG = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year + 1)) / 1000) * -1
+                __colH = __colF + __colG
+                __roi = (__colH - __b28) / __b28 
+                newdict.update({__year:{'Tahun': __year, 'YearlyIncome': __colF, 'OMCost': __colG, 'IncomeYearN': __colH, 'ROI': __roi}})
+            else:
+                __year = iterate
+                __colF = __colF1 * ((1 + __iAE)/(1+__dAE)) ** __year
+                __colG = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year + 1)) / 1000) * -1
+                for iterate in range(1, __year + 1):
+                    if(iterate == 1):
+                        ___year = iterate
+                        ___colF = __colF1
+                        ___colG = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year + 1)) / 1000) * -1)
+                        __colH = ___colF + ___colG
+                    else:
+                        ___year = iterate
+                        ___colF += __colF
+                        ___colG += ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year + 1)) / 1000) * -1)
+                        __colH = ___colF + ___colG
+                __roi = (__colH - __b28) / __b28
+                newdict.update({__year:{'Tahun': __year, 'YearlyIncome': __colF, 'OMCost': __colG, 'IncomeYearN': __colH, 'ROI': __roi}})
+        return newdict
+
+    # net Present Value
+    def netPresentValue(self, year:float = 26):
+        __d18 = self.kapasitasTerpasangD18()
+        __avgPkurs = self.__avgPKurs
+        __iAE = self.__iAnalisaEkonomi
+        __dAE = self.__dAnalisaEkonomi
+        __b28 = self.totalB28()
+        __colM1 = self.pendapatanEnergiB31()
+        __colL = - __b28
+        newdict = {}
+        for iterate in range(1, year):
+            if(iterate == 1 ):
+                __year = iterate
+                __colL = __colL
+                __colM = __colM1
+                __colN = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year + 1)) / 1000) * -1
+                __colO = (__colM + __colN) * ((1 + __iAE) ** __year) / ((1 + __dAE) ** __year)
+                __colP = __colL + __colO
+                newdict.update({__year:{'Tahun': __year, 'CapitalCost':__colL, 'YearlyIncome': __colM, 'OMCost': __colN,
+                'Rt': __colO, 'NPV': __colP}})
+            else:
+                __year = iterate
+                __colL = __colL
+                __colM = __colM1 * ((1 + __iAE)/(1+__dAE)) ** __year
+                __colN = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year + 1)) / 1000) * -1
+                __colO = (__colM + __colN) * ((1 + __iAE) ** __year) / ((1 + __dAE) ** __year)
+                for iterate in range(1, __year + 1):
+                    if(iterate == 1):
+                        ___year = iterate
+                        ___colM = __colM1
+                        ___colN = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year + 1)) / 1000) * -1)
+                        ___colO = (___colM + ___colN) * ((1 + __iAE) ** ___year) / ((1 + __dAE) ** ___year)
+                        __colP = __colL + ___colO
+                    else:
+                        ___year = iterate
+                        ___colM = __colM
+                        ___colN = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year + 1)) / 1000) * -1)
+                        ___colO += (___colM + ___colN) * ((1 + __iAE) ** ___year) / ((1 + __dAE) ** ___year)
+                        __colP = __colL + ___colO
+                newdict.update({__year:{'Tahun': __year, 'CapitalCost':__colL, 'YearlyIncome': __colM, 'OMCost': __colN,
+                'Rt': __colO, 'NPV': __colP}})
+        return newdict
+
 
