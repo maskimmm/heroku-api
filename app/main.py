@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('index.html')
+    # return render_template('index.html')
+    return 'api'
 
 @app.route('/api/v1/energy-svi-yearly', methods=['POST']) 
 def expectedEnergySVIYearly():
