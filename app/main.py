@@ -91,20 +91,9 @@ def allOutput():
     pvDaily = nc.pvOutputDaily()
     eeDaily = nc.getExpectedEnergyDaily()
     eeYearly = nc.getExpectedEnergySVIYearly()
-    return jsonify(pvYearly=pvYearly, pvDaily=pvDaily, eeDaily=eeDaily, eeYearly=eeYearly)
-
-@app.route('/api/v1/all-input', methods=['POST']) 
-def allInput():
-    r = request.get_json()
-    gMT = r['GMT']
-    lat = r['Lat']
-    long = r['Long']
-    colTilt = r['ColTilt']
-    azimuthCol = r['AzimuthCol']
-    rLength = r['RLength']
-    rWidth = r['RWidth']
-    pln = r['PLN']
-    return jsonify(gMT=gMT, lat=lat, long=long, colTilt=colTilt, azimuthCol=azimuthCol, rLength=rLength, rWidth=rWidth, pln=pln)
+    inverter = nc.inverterB17()
+    kt = nc.kapasitasTerpasangB18()
+    return jsonify(pvYearly=pvYearly, pvDaily=pvDaily, eeDaily=eeDaily, eeYearly=eeYearly, inverter=inverter, kt=kt)
 
 @app.route('/api/v1/return-of-investment', methods=['POST']) 
 def rOI():
