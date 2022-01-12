@@ -19,6 +19,8 @@ class Calculation:
     __avgPPrice:float = 3696933.54
     __avgPWp:float = 0.004990696
     __avgPWeight:float = 0.055452816
+    __avgPLength:float = 0.5
+    __avgPWidth:float = 0.25
 
     # Analisa Ekonomi
     __iAnalisaEkonomi = 0.025
@@ -467,201 +469,293 @@ class Calculation:
             golPLN = 0
         return golPLN
 
-    # Kapasitas Terpasang (Temp) // B16
-    def kTB16(self):
-        __roofArea =self.RoofArea
-        __avgPWp = self.__avgPWp
-        kapasitas = __roofArea / __avgPWp
+    # Panjang Sizing 1 Sisi // B16
+    def panjangSizing1B16(self):
+        value = m.floor(self.inputRoofLength/self.__avgPLength)
+        return value
+
+    # Lebar Sizing 1 Sisi // D16
+    def lebarSizing1D16(self):
+        value = m.floor(self.inputRoofWidth/self.__avgPWidth)
+        return value
+
+    # Jumlah PV Terpasang 1 Sisi // F16
+    def jumlahPV1F16(self):
+        _pSizingB16 = self.panjangSizing1B16()
+        _lsizingD16 = self.lebarSizing1D16()
+        if (_pSizingB16 > _lsizingD16):
+            value = _lsizingD16
+        else:
+            value = _pSizingB16
+        return value 
+
+    # Panjang Sizing 2 Sisi // B17
+    def panjangSizing2B17(self):
+        _pSizingB16 = self.panjangSizing1B16()
+        value = _pSizingB16 * 2
+        return value
+
+    # Lebar Sizing 2 Sisi // D17
+    def lebarSizing2D17(self):
+        _lSizingD16 = self.lebarSizing1D16()
+        value = _lSizingD16 * 2
+        return value
+
+    # Jumlah PV Terpasang 2 Sisi // F17
+    def jumlahPV2F17(self):
+        _jumlahPV1 = self.jumlahPV1F16()
+        value = _jumlahPV1 * 2
+        return value
+
+    # Kapasitas Terpasang (Temp) // B18
+    def kTB18(self):
+        _jumlahPV2F17 = self.jumlahPV2F17()
+        kapasitas = _jumlahPV2F17 * 100
         return kapasitas
 
-    # Kapasitas terpasang (Temp) // D16
-    def kTD16(self):
-        __kTB16 = self.kTB16()
-        kTD16 = __kTB16 * (0.965 * 0.99 * 0.997 * 0.991 * 0.995 * 0.97 * 0.959)
-        return kTD16
+    # Kapasitas terpasang (Temp) // D18
+    def kTD18(self):
+        __kTB18 = self.kTB18()
+        kTD18 = __kTB18 * (0.965 * 0.99 * 0.997 * 0.991 * 0.995 * 0.97 * 0.959)
+        return kTD18
 
-    # Kapasitas Terpasang (Temp) // F16
-    def kTF16(self):
-        __kTD16 = self.kTD16()
-        kTF16 = __kTD16 / 0.85
-        return kTF16
+    # Kapasitas Terpasang (Temp) // F18
+    def kTF18(self):
+        __kTD18 = self.kTD18()
+        kTF18 = __kTD18 / 0.85
+        return kTF18
 
-    # Inverter // B17
-    def inverterB17(self):
+    # Inverter (Temp)// B19
+    def inverterB19(self):
         __PLN = self.inputPLN
-        __kTF16 = self.kTF16()
-        if (__kTF16 > __PLN):
+        __kTF18 = self.kTF18()
+        if (__kTF18 > __PLN):
             inverter = __PLN
         else:
-            inverter = __kTF16
+            inverter = __kTF18
         return inverter
 
-    # Inverter // D17
-    def inverterD17(self):
-        __inverterB17 = self.inverterB17()
-        inverter = __inverterB17 * 0.85
+    # Inverter (Temp) // D19
+    def inverterD19(self):
+        __inverterB19 = self.inverterB19()
+        inverter = __inverterB19 * 0.85
         return inverter
 
-    # Inverter // F17
-    def inverterF17(self):
-        __inverterD17 = self.inverterD17()
-        inverter = __inverterD17 / (0.965 * 0.99 * 0.997 * 0.991 * 0.995 * 0.97 * 0.959)
+    # Inverter // F19
+    def inverterF19(self):
+        __inverterD19 = self.inverterD19()
+        inverter = __inverterD19 / (0.965 * 0.99 * 0.997 * 0.991 * 0.995 * 0.97 * 0.959)
         return inverter
 
-    # Kapasitas Terpasang // B18
-    def kapasitasTerpasangB18(self):
-        return self.inverterF17()
+    # Kapasitas Terpasang // B20
+    def kapasitasTerpasangB20(self):
+        return self.inverterF19()
 
-    # Kapasitas Terpasang // D18
-    def kapasitasTerpasangD18(self):
-        kapasitas = self.kapasitasTerpasangB18() * (0.965 * 0.99 * 0.997 * 0.991 * 0.995 * 0.97 * 0.959)
+    # Kapasitas Terpasang // D20
+    def kapasitasTerpasangD20(self):
+        kapasitas = m.floor(self.kapasitasTerpasangB20()/100) * 100
+        # kapasitas = round(m.floor(self.kapasitasTerpasangB20()), -2)
         return kapasitas
 
-    # Berat PV // B19
-    def beratPV(self):
-        __kTB18 = self.kapasitasTerpasangB18()
-        __avgPWeight = self.__avgPWeight
-        beratPV = __kTB18 * __avgPWeight
-        return beratPV
+    # Kapasitas Terpasang // F20
+    def kapasitasTerpasangF20(self):
+        kapasitas = self.kapasitasTerpasangD20() * (0.965 * 0.99 * 0.997 * 0.991 * 0.995 * 0.97 * 0.959)
+        return kapasitas
+
+    # Inverter // B21
+    def inverterB21(self):
+        value = self.kapasitasTerpasangF20() / 0.85
+        return value
+
+    # Panjang Total // B22
+    def panjangTotalB22(self):
+        value = self.kapasitasTerpasangD20() / 100 * self.__avgPLength
+        return value
+
+    # Lebar Total // E22
+    def lebarTotalE22(self):
+        value = self.kapasitasTerpasangD20() / 100 * self.__avgPWidth
+        return value
+
+    # Jumlah PV Total // B23
+    def jumlahPVTotalB23(self):
+        value = self.panjangTotalB22() / self.__avgPLength
+        return value
+
+    # Jumlah PV 1 Sisi // B24
+    def jumlahPV1SisiB24(self):
+        _b23 = self.jumlahPVTotalB23()
+        _f16 = self.jumlahPV1F16()
+        if (_b23 > _f16):
+            value = _f16
+        else:
+            value = _b23
+        return value
+
+    # Jumlah PV Sisi Lawan // E24
+    def jumlahPVSisiLawanE24(self):
+        _b23 = self.jumlahPVTotalB23()
+        _f16 = self.jumlahPV1F16()
+        if (_b23 > _f16):
+            value = _b23 - _f16
+        else:
+            value = 0
+        return value
+
+    # Berat PV // B25
+    def beratPVB25(self):
+        beratPVB25 = self.kapasitasTerpasangD20() * self.__avgPWeight
+        return beratPVB25
     
-    # Berat Inverter // B20
-    def beratInverter(self):
-        __inverterb17 = self.inverterB17()
+    # Berat Inverter // B26
+    def beratInverterB26(self):
+        __inverterB21 = self.inverterB21()
         __avgIWeight = self.__avgIWeight
-        beratInverter = __inverterb17 * __avgIWeight
-        return beratInverter
+        beratInverterB26 = __inverterB21 * __avgIWeight
+        return beratInverterB26
 
     # HARGA INVESTASI
-    # PV // B23
-    def pvB23(self):
-        __kTB18 = self.kapasitasTerpasangB18()
-        __avgPPrice = self.__avgPPrice
-        pvB23 = __kTB18 * __avgPPrice / 1000
-        return pvB23
+    # PV // B29
+    def pvB29(self):
+        pvB29 = self.kapasitasTerpasangD20() * self.__avgPPrice / 1000
+        return pvB29
     
-    # Inverter // B24
-    def inverterB24(self):
-        __inverterB17 = self.inverterB17()
-        __avgIPrice = self.__avgIPrice
-        inverterB24 = __inverterB17 * __avgIPrice
-        return inverterB24
+    # Inverter // B30
+    def inverterB30(self):
+        inverterB30 = self.inverterB21() * self.__avgIPrice
+        return inverterB30
 
-    # Shipping PV & inverter // B25
-    def shippingPVInverterB25(self):
-        __beratPV = self.beratPV()
-        __beratInverter = self.beratInverter()
+    # Shipping PV & inverter // B31
+    def shippingPVInverterB31(self):
+        __beratPVB25 = self.beratPVB25()
+        __beratInverterB26 = self.beratInverterB26()
         __kurs = self.__avgPKurs
-        shipping = (__beratPV + __beratInverter) * 1.05 * __kurs
+        shipping = (__beratPVB25 + __beratInverterB26) * 1.05 * __kurs
         return shipping
 
-    # Pajak // B26
-    def pajakB26(self):
-        __b23 = self.pvB23()
-        __b24 = self.inverterB24()
-        __b25 = self.shippingPVInverterB25()
-        B26 = (__b23 + __b24 + __b25) * 0.175
-        return B26
+    # Pajak // B32
+    def pajakB32(self):
+        __b23 = self.pvB29()
+        __b24 = self.inverterB30()
+        __b25 = self.shippingPVInverterB31()
+        B32 = (__b23 + __b24 + __b25) * 0.175
+        return B32
     
-    # Mounting // B27
-    def MountingB27(self):
+    # Mounting // B33
+    def mountingB33(self):
         __roofLength = self.inputRoofLength
         __roofWidth = self.inputRoofWidth
-        b27 = (__roofLength + __roofWidth) * 2 * 88000
-        return b27
+        b33 = (__roofLength + __roofWidth) * 2 * 88000
+        return b33
 
-    # Total // B28
-    def totalB28(self):
-        __b23 = self.pvB23()
-        __b24 = self.inverterB24()
-        __b25 = self.shippingPVInverterB25()
-        __b26 = self.pajakB26()
-        __b27 = self.MountingB27()
+    # Total // B34
+    def totalB34(self):
+        __b23 = self.pvB29()
+        __b24 = self.inverterB30()
+        __b25 = self.shippingPVInverterB31()
+        __b26 = self.pajakB32()
+        __b27 = self.mountingB33()
         b28 = __b23 + __b24 + __b25 + __b26 + __b27
         return b28
     
-    # Energi Terbangkitkan // B30
-    def energiTerbangkitkanB30(self):
-        __b18 = self.kapasitasTerpasangB18()
-        __pvOutputYearly = self.pvOutputYearly()
-        b30 = __b18 / 1000 * __pvOutputYearly
-        return b30
+    # Energi Terbangkitkan 1 Sisi // B36
+    def energiTerbangkitkanB36(self):
+        value = self.pvOutputYearly() * self.jumlahPV1SisiB24() * 100 / 1000
+        return value
+
+    # Energi Terbangkitkan Sisi Lawan // B37
+    def energiTerbangkitkanSisiLawanB37(self):
+        if (self.inputAzimuthCol > 360):
+            if (self.inputAzimuthCol % 360 > 180):
+                newAzimuth = (self.inputAzimuthCol % 360) - 180
+            else:
+                newAzimuth = (self.inputAzimuthCol % 360) + 180
+        else:
+            if (self.inputAzimuthCol > 180):
+                newAzimuth = (self.inputAzimuthCol) - 180
+            else:
+                newAzimuth = (self.inputAzimuthCol) + 180
+
+        _pvOutputmir = Calculation(inputGMT= self.inputGMT, inputLat= self.inputLat, inputLong= self.inputLong, inputAzimuthCol= newAzimuth, inputColTilt= self.inputColTilt, inputPLN= self.inputPLN, inputRoofLength= self.inputRoofLength, inputRoofWidth= self.inputRoofWidth).pvOutputYearly()
+
+        value =  _pvOutputmir * self.jumlahPVSisiLawanE24() * 100 / 1000 
+        return value
     
-    # Pendapatan Energi // B31
-    def pendapatanEnergiB31(self):
+    # Pendapatan Energi // B38
+    def pendapatanEnergiB38(self):
         __biayaPLN = self.golPLN()
-        __b30 = self.energiTerbangkitkanB30()
-        b31 = __b30 * __biayaPLN * 0.65
+        b31 = (self.energiTerbangkitkanB36() + self.energiTerbangkitkanSisiLawanB37()) * __biayaPLN * 0.65
         return b31
 
     # ANALISA EKONOMI TAB
 
     # OM Cost/Tahun // B5
     def oMCostB5(self):
-        __d18 = self.kapasitasTerpasangD18()
+        __d18 = self.kapasitasTerpasangF20()
         __avgPKurs = self.__avgPKurs
         b5 = (__d18 * 25 * __avgPKurs / 1000) * -1
         return b5
     
     # Simple Payback Period
     def simplePayback(self):
-        __b3 = self.totalB28()
-        __b4 = self.pendapatanEnergiB31()
+        __b3 = self.totalB34()
+        __b4 = self.pendapatanEnergiB38()
         __b5 = self.oMCostB5()
         b6 = __b3 / (__b4 + __b5)
         return b6
     
     # Return of Investment (ROI)
     def rOI(self, year:float = 26):
-        __d18 = self.kapasitasTerpasangD18()
+        __d18 = self.kapasitasTerpasangF20()
         __avgPkurs = self.__avgPKurs
         __iAE = self.__iAnalisaEkonomi
         __dAE = self.__dAnalisaEkonomi
-        __b28 = self.totalB28()
-        __colF1 = self.pendapatanEnergiB31()
+        __b34 = self.totalB34()
+        __colF1 = self.pendapatanEnergiB38()
         newdict = {}
         for iterate in range(1, year):
             if(iterate == 1 ):
                 __year = iterate
                 __colF = __colF1
-                __colG = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year + 1)) / 1000) * -1
+                __colG = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year)) / 1000) * -1
                 __colH = __colF + __colG
-                __roi = (__colH - __b28) / __b28 
+                __roi = (__colH - __b34) / __b34 
                 newdict.update({__year:{'Tahun': __year, 'YearlyIncome': __colF, 'OMCost': __colG, 'IncomeYearN': __colH, 'ROI': __roi}})
             else:
                 __year = iterate
                 __colF = __colF1 * ((1 + __iAE)/(1+__dAE)) ** __year
-                __colG = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year + 1)) / 1000) * -1
+                __colG = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year)) / 1000) * -1
                 for iterate in range(1, __year + 1):
                     if(iterate == 1):
                         ___year = iterate
                         ___colF = __colF1
-                        ___colG = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year + 1)) / 1000) * -1)
+                        ___colG = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year)) / 1000) * -1)
                         __colH = ___colF + ___colG
                     else:
                         ___year = iterate
                         ___colF += __colF
-                        ___colG += ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year + 1)) / 1000) * -1)
+                        ___colG += ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year)) / 1000) * -1)
                         __colH = ___colF + ___colG
-                __roi = (__colH - __b28) / __b28
+                __roi = (__colH - __b34) / __b34
                 newdict.update({__year:{'Tahun': __year, 'YearlyIncome': __colF, 'OMCost': __colG, 'IncomeYearN': __colH, 'ROI': __roi}})
         return newdict
 
     # net Present Value
     def netPresentValue(self, year:float = 26):
-        __d18 = self.kapasitasTerpasangD18()
+        __d18 = self.kapasitasTerpasangF20()
         __avgPkurs = self.__avgPKurs
         __iAE = self.__iAnalisaEkonomi
         __dAE = self.__dAnalisaEkonomi
-        __b28 = self.totalB28()
-        __colM1 = self.pendapatanEnergiB31()
-        __colL = - __b28
+        __b34 = self.totalB34()
+        __colM1 = self.pendapatanEnergiB38()
+        __colL = __b34 * (-1)
         newdict = {}
         for iterate in range(1, year):
             if(iterate == 1 ):
                 __year = iterate
                 __colL = __colL
                 __colM = __colM1
-                __colN = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year + 1)) / 1000) * -1
+                __colN = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year)) / 1000) * -1
                 __colO = (__colM + __colN) * ((1 + __iAE) ** __year) / ((1 + __dAE) ** __year)
                 __colP = __colL + __colO
                 newdict.update({__year:{'Tahun': __year, 'CapitalCost':__colL, 'YearlyIncome': __colM, 'OMCost': __colN,
@@ -670,23 +764,70 @@ class Calculation:
                 __year = iterate
                 __colL = __colL
                 __colM = __colM1 * ((1 + __iAE)/(1+__dAE)) ** __year
-                __colN = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year + 1)) / 1000) * -1
+                __colN = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year)) / 1000) * -1
                 __colO = (__colM + __colN) * ((1 + __iAE) ** __year) / ((1 + __dAE) ** __year)
                 for iterate in range(1, __year + 1):
                     if(iterate == 1):
                         ___year = iterate
                         ___colM = __colM1
-                        ___colN = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year + 1)) / 1000) * -1)
+                        ___colN = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year)) / 1000) * -1)
                         ___colO = (___colM + ___colN) * ((1 + __iAE) ** ___year) / ((1 + __dAE) ** ___year)
                         __colP = __colL + ___colO
                     else:
                         ___year = iterate
                         ___colM = __colM
-                        ___colN = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year + 1)) / 1000) * -1)
+                        ___colN = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year)) / 1000) * -1)
                         ___colO += (___colM + ___colN) * ((1 + __iAE) ** ___year) / ((1 + __dAE) ** ___year)
                         __colP = __colL + ___colO
                 newdict.update({__year:{'Tahun': __year, 'CapitalCost':__colL, 'YearlyIncome': __colM, 'OMCost': __colN,
                 'Rt': __colO, 'NPV': __colP}})
         return newdict
 
+    #  Payback dengan Pinjaman Bunga Bank
+    def paybackPinjamanBungaBank(self, year:float = 26):
+        __bungaBank = 0.05
+        __d18 = self.kapasitasTerpasangF20()
+        __avgPkurs = self.__avgPKurs
+        __iAE = self.__iAnalisaEkonomi
+        __dAE = self.__dAnalisaEkonomi
+        __b34 = self.totalB34()
+        __colT1 = self.pendapatanEnergiB38()
+        __colS = __b34 * (-1)
+        newdict = {}
+        for iterate in range(1, year):
+            if(iterate == 1 ):
+                __year = iterate
+                __colS = __colS
+                __colT = __colT1
+                __colU = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year)) / 1000) * -1
+                __colV = __colS * __bungaBank
+                __colW = __colS + __colT + __colU + __colV
+                newdict.update({__year:{'Tahun': __year, 'CapitalCost':__colS, 'YearlyIncome': __colT, 'OMCost': __colU,
+                'Bunga': __colV, 'CashFlow': __colW}})
+            else:
+                __year = iterate
+                __colS = __colS
+                __colT = __colT1 * ((1 + __iAE)/(1+__dAE)) ** __year
+                __colU = (__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (__year)) / 1000) * -1
+                if (__colW > 0):
+                    __colV = 0
+                else:
+                    __colV = __colW * __bungaBank
+                for iterate in range(1, __year + 1):
+                    if(iterate == 1):
+                        ___year = iterate
+                        ___colT = __colT1
+                        ___colU = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year - 1)) / 1000) * -1)
+                        __colW = __colW + ___colT + ___colU + __colV
+                    else:
+                        ___year = iterate
+                        ___colT = __colT
+                        ___colU = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year - 1)) / 1000) * -1)
+                        __colW = __colW + ___colT + ___colU + __colV
+                
+                newdict.update({__year:{'Tahun': __year, 'CapitalCost':__colS, 'YearlyIncome': __colT, 'OMCost': __colU,
+                'Bunga': __colV, 'CashFlow': __colW}})
+        return newdict
 
+nilai = Calculation(inputGMT= 7, inputLat= -7.282695, inputLong= 112.795678, inputColTilt= 15, inputAzimuthCol= 180, inputRoofLength= 4, inputRoofWidth= 2, inputPLN=1300)
+print(nilai.paybackPinjamanBungaBank())
