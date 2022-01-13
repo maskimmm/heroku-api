@@ -142,7 +142,7 @@ def paybackBungaBank():
     return jsonify(result)
 
 @app.route('/api/v1/kapasitas-terpasang', methods=['POST']) 
-def allOutput():
+def kapasitasTerpasang():
     r = request.get_json()
     gMT = r['GMT']
     lat = r['Lat']
@@ -162,7 +162,7 @@ def allOutput():
     return jsonify(pvSisi1=pvSisi1, pvSisiLawan=pvSisiLawan, inverter=inverter, wpInstalled=wpInstalled, wattInstalled=wattInstalled)
 
 @app.route('/api/v1/energi-terbangkitkan', methods=['POST']) 
-def allOutput():
+def energiTerbangkitkan():
     r = request.get_json()
     gMT = r['GMT']
     lat = r['Lat']
@@ -180,7 +180,7 @@ def allOutput():
     return jsonify(sisi1=sisi1, sisi2=sisi2, pendapatanEnergi=pendapatanEnergi)
 
 @app.route('/api/v1/investasi', methods=['POST']) 
-def allOutput():
+def investasi():
     r = request.get_json()
     gMT = r['GMT']
     lat = r['Lat']
