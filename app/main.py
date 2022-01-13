@@ -199,4 +199,4 @@ def investasi():
     mounting = nc.mountingB33()
     total = nc.totalB34()
     simplepayback = nc.simplePayback()
-    return jsonify(pv=pv, inverter=inverter, shiping=shipping, pajak=pajak, mounting=mounting, total=total)
+    return jsonify(pv=pv, inverter=inverter, shiping=shipping, pajak=pajak, mounting=mounting, total=total, simplepayback=simplepayback)
