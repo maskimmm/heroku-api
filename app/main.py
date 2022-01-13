@@ -126,3 +126,19 @@ def nPV():
     inputAzimuthCol = azimuthCol, inputRoofLength = rLength, inputRoofWidth = rWidth, inputPLN = pln)
     result = nc.netPresentValue()
     return jsonify(result)
+
+@app.route('/api/v1/payback-bunga-bank', methods=['POST']) 
+def paybackBungaBank():
+    r = request.get_json()
+    gMT = r['GMT']
+    lat = r['Lat']
+    long = r['Long']
+    colTilt = r['ColTilt']
+    azimuthCol = r['AzimuthCol']
+    rLength = r['RLength']
+    rWidth = r['RWidth']
+    pln = r['PLN']
+    nc = Calculation(inputGMT = gMT, inputLat = lat, inputLong = long, inputColTilt = colTilt, 
+    inputAzimuthCol = azimuthCol, inputRoofLength = rLength, inputRoofWidth = rWidth, inputPLN = pln)
+    result = nc.paybackPinjamanBungaBank()
+    return jsonify(result)

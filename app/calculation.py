@@ -813,7 +813,7 @@ class Calculation:
                     __colV = 0
                 else:
                     __colV = __colW * __bungaBank
-                for iterate in range(1, __year + 1):
+                for iterate in range(1, __year):
                     if(iterate == 1):
                         ___year = iterate
                         ___colT = __colT1
@@ -829,5 +829,5 @@ class Calculation:
                 'Bunga': __colV, 'CashFlow': __colW}})
         return newdict
 
-nilai = Calculation(inputGMT= 7, inputLat= -7.282695, inputLong= 112.795678, inputColTilt= 15, inputAzimuthCol= 180, inputRoofLength= 4, inputRoofWidth= 2, inputPLN=1300)
-print(nilai.paybackPinjamanBungaBank())
+# nilai = Calculation(inputGMT= 7, inputLat= -7.282695, inputLong= 112.795678, inputColTilt= 15, inputAzimuthCol= 180, inputRoofLength= 4, inputRoofWidth= 2, inputPLN=1300)
+# print(nilai.paybackPinjamanBungaBank())
