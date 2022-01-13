@@ -91,9 +91,7 @@ def allOutput():
     pvDaily = nc.pvOutputDaily()
     eeDaily = nc.getExpectedEnergyDaily()
     eeYearly = nc.getExpectedEnergySVIYearly()
-    inverter = nc.inverterB17()
-    kt = nc.kapasitasTerpasangB18()
-    return jsonify(pvYearly=pvYearly, pvDaily=pvDaily, eeDaily=eeDaily, eeYearly=eeYearly, inverter=inverter, kt=kt)
+    return jsonify(pvYearly=pvYearly, pvDaily=pvDaily, eeDaily=eeDaily, eeYearly=eeYearly)
 
 @app.route('/api/v1/return-of-investment', methods=['POST']) 
 def rOI():
@@ -142,3 +140,63 @@ def paybackBungaBank():
     inputAzimuthCol = azimuthCol, inputRoofLength = rLength, inputRoofWidth = rWidth, inputPLN = pln)
     result = nc.paybackPinjamanBungaBank()
     return jsonify(result)
+
+@app.route('/api/v1/kapasitas-terpasang', methods=['POST']) 
+def allOutput():
+    r = request.get_json()
+    gMT = r['GMT']
+    lat = r['Lat']
+    long = r['Long']
+    colTilt = r['ColTilt']
+    azimuthCol = r['AzimuthCol']
+    rLength = r['RLength']
+    rWidth = r['RWidth']
+    pln = r['PLN']
+    nc = Calculation(inputGMT = gMT, inputLat = lat, inputLong = long, inputColTilt = colTilt, 
+    inputAzimuthCol = azimuthCol, inputRoofLength = rLength, inputRoofWidth = rWidth, inputPLN = pln)
+    pvSisi1 = nc.jumlahPV1SisiB24()
+    pvSisiLawan = nc.jumlahPVSisiLawanE24()
+    inverter = nc.inverterB21()
+    wpInstalled = nc.kapasitasTerpasangD20()
+    wattInstalled = nc.kapasitasTerpasangF20()
+    return jsonify(pvSisi1=pvSisi1, pvSisiLawan=pvSisiLawan, inverter=inverter, wpInstalled=wpInstalled, wattInstalled=wattInstalled)
+
+@app.route('/api/v1/energi-terbangkitkan', methods=['POST']) 
+def allOutput():
+    r = request.get_json()
+    gMT = r['GMT']
+    lat = r['Lat']
+    long = r['Long']
+    colTilt = r['ColTilt']
+    azimuthCol = r['AzimuthCol']
+    rLength = r['RLength']
+    rWidth = r['RWidth']
+    pln = r['PLN']
+    nc = Calculation(inputGMT = gMT, inputLat = lat, inputLong = long, inputColTilt = colTilt, 
+    inputAzimuthCol = azimuthCol, inputRoofLength = rLength, inputRoofWidth = rWidth, inputPLN = pln)
+    sisi1 = nc.energiTerbangkitkanB36()
+    sisi2 = nc.energiTerbangkitkanSisiLawanB37()
+    pendapatanEnergi = nc.pendapatanEnergiB38()
+    return jsonify(sisi1=sisi1, sisi2=sisi2, pendapatanEnergi=pendapatanEnergi)
+
+@app.route('/api/v1/investasi', methods=['POST']) 
+def allOutput():
+    r = request.get_json()
+    gMT = r['GMT']
+    lat = r['Lat']
+    long = r['Long']
+    colTilt = r['ColTilt']
+    azimuthCol = r['AzimuthCol']
+    rLength = r['RLength']
+    rWidth = r['RWidth']
+    pln = r['PLN']
+    nc = Calculation(inputGMT = gMT, inputLat = lat, inputLong = long, inputColTilt = colTilt, 
+    inputAzimuthCol = azimuthCol, inputRoofLength = rLength, inputRoofWidth = rWidth, inputPLN = pln)
+    pv = nc.pvB29()
+    inverter = nc.inverterB30()
+    shipping = nc.shippingPVInverterB31()
+    pajak = nc.pajakB32()
+    mounting = nc.mountingB33()
+    total = nc.totalB34()
+    simplepayback = nc.simplePayback()
+    return jsonify(pv=pv, inverter=inverter, shiping=shipping, pajak=pajak, mounting=mounting, total=total)
