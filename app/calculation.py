@@ -450,22 +450,22 @@ class Calculation:
         __pln = self.inputPLN
         # print(str(__pln))
         if(__pln > 0 and __pln <= 900):
-            print("Golongan R-1 (900 VA)")
+            # print("Golongan R-1 (900 VA)")
             golPLN = 1352.0
         elif(__pln > 900 and __pln <= 1300):
-            print("Golongan R-1 (1300 VA)")
+            # print("Golongan R-1 (1300 VA)")
             golPLN = 1444.7
         elif(__pln > 1300 and __pln <= 2200):
-            print("Golongan R-1 (2200 VA)")
+            # print("Golongan R-1 (2200 VA)")
             golPLN = 1444.7
         elif(__pln > 2200 and __pln <= 5500):
-            print("Golongan R-2 (2200-5500 VA)")
+            # print("Golongan R-2 (2200-5500 VA)")
             golPLN = 1444.7
         elif(__pln > 5500):
-            print("Golongan R-3 (>5500 VA)")
+            # print("Golongan R-3 (>5500 VA)")
             golPLN = 1444.7
         else:
-            print("Golongan Tidak sesuai")
+            # print("Golongan Tidak sesuai")
             golPLN = 0
         return golPLN
 
@@ -813,17 +813,18 @@ class Calculation:
                     __colV = 0
                 else:
                     __colV = __colW * __bungaBank
-                for iterate in range(1, __year):
-                    if(iterate == 1):
-                        ___year = iterate
-                        ___colT = __colT1
-                        ___colU = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year - 1)) / 1000) * -1)
-                        __colW = __colW + ___colT + ___colU + __colV
-                    else:
-                        ___year = iterate
-                        ___colT = __colT
-                        ___colU = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year - 1)) / 1000) * -1)
-                        __colW = __colW + ___colT + ___colU + __colV
+                __colW = __colW + __colT + __colU + __colV
+                # for iterate in range(1, __year):
+                #     if(iterate == 1):
+                #         ___year = iterate
+                #         ___colT = __colT1
+                #         ___colU = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year - 1)) / 1000) * -1)
+                #         __colW = __colW + ___colT + ___colU + __colV
+                #     else:
+                #         ___year = iterate
+                #         ___colT = __colT
+                #         ___colU = ((__d18 * 25 * __avgPkurs * (((1 + __iAE) / (1 + __dAE)) ** (___year - 1)) / 1000) * -1)
+                #         __colW = __colW + ___colT + ___colU + __colV
                 
                 newdict.update({__year:{'Tahun': __year, 'CapitalCost':__colS, 'YearlyIncome': __colT, 'OMCost': __colU,
                 'Bunga': __colV, 'CashFlow': __colW}})
