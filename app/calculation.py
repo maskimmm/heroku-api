@@ -466,7 +466,7 @@ class Calculation:
             golPLN = 1444.7
         else:
             # print("Golongan Tidak sesuai")
-            golPLN = 0
+            golPLN = 1444.7
         return golPLN
 
     # Panjang Sizing 1 Sisi // B16
@@ -701,7 +701,16 @@ class Calculation:
         __b3 = self.totalB34()
         __b4 = self.pendapatanEnergiB38()
         __b5 = self.oMCostB5()
-        b6 = __b3 / (__b4 + __b5)
+        if (__b4 == 0):
+            if (__b5 == 0):
+                b6 = __b3 / 1
+            else:
+                b6 = __b3 / __b5
+        else:
+            if (__b5 == 0):
+                b6 = __b3 / __b4
+            else:
+                b6 = __b3 / __b5
         return b6
     
     # Return of Investment (ROI)
@@ -829,6 +838,3 @@ class Calculation:
                 newdict.update({__year:{'Tahun': __year, 'CapitalCost':__colS, 'YearlyIncome': __colT, 'OMCost': __colU,
                 'Bunga': __colV, 'CashFlow': __colW}})
         return newdict
-
-# nilai = Calculation(inputGMT= 7, inputLat= -7.282695, inputLong= 112.795678, inputColTilt= 15, inputAzimuthCol= 180, inputRoofLength= 4, inputRoofWidth= 2, inputPLN=1300)
-# print(nilai.paybackPinjamanBungaBank())
