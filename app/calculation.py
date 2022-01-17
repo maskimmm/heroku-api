@@ -705,12 +705,12 @@ class Calculation:
             if (__b5 == 0):
                 b6 = __b3 / 1
             else:
-                b6 = __b3 / __b5
+                b6 = __b3 / (__b5 + __b4)
         else:
             if (__b5 == 0):
-                b6 = __b3 / __b4
+                b6 = __b3 / (__b5 + __b4)
             else:
-                b6 = __b3 / __b5
+                b6 = __b3 / (__b5 + __b4)
         return b6
     
     # Return of Investment (ROI)
